@@ -1,5 +1,5 @@
-./objects/empty.o: ..\empty.c ..\ti_msp_dl_config.h \
-  ..\..\source\ti\devices\msp\msp.h \
+./objects/bsp_gyro.o: ..\BSP\bsp_gyro.c ..\BSP\bsp_gyro.h \
+  ..\..\project\ti_msp_dl_config.h ..\..\source\ti\devices\msp\msp.h \
   ..\..\source\ti\devices\DeviceFamily.h \
   ..\..\source\ti\devices\msp\m0p\mspm0g350x.h \
   E:\keil5\ARM\ARMCLANG\include\stdint.h \
@@ -78,9 +78,6 @@
   ..\..\source\ti\driverlib\dl_vref.h \
   ..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\..\source\ti\driverlib\m0p\dl_systick.h ..\hardware\hw_motor.h \
-  ..\..\project\ti_msp_dl_config.h \
-  E:\keil5\ARM\ARMCLANG\include\string.h ..\hardware\hw_lcd.h \
-  E:\keil5\ARM\ARMCLANG\include\stdio.h ..\hardware\hw_encoder.h \
-  ..\middle\mid_timer.h ..\BSP\bsp_gyro.h ..\BSP\delay.h ..\BSP\Uart.h \
-  ..\hardware\No_Mcu_Ganv_Grayscale_Sensor_Config.h ..\BSP\ADC.h
+  ..\..\source\ti\driverlib\m0p\dl_systick.h \
+  E:\keil5\ARM\ARMCLANG\include\stdio.h \
+  E:\keil5\ARM\ARMCLANG\include\string.h

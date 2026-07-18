@@ -56,10 +56,15 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_SYSCTL_init();
     SYSCFG_DL_PWM_MOTOR_init();
     SYSCFG_DL_TIMER_TICK_init();
+    SYSCFG_DL_UART_0_init();
     SYSCFG_DL_SPI_LCD_init();
+    SYSCFG_DL_ADC12_0_init();
+    SYSCFG_DL_DMA_init();
+    SYSCFG_DL_SYSTICK_init();
     /* Ensure backup structures have no valid state */
 	gPWM_MOTORBackup.backupRdy 	= false;
 	gTIMER_TICKBackup.backupRdy 	= false;
+
 	gSPI_LCDBackup.backupRdy 	= false;
 
 }
@@ -96,13 +101,21 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_reset(GPIOB);
     DL_TimerA_reset(PWM_MOTOR_INST);
     DL_TimerA_reset(TIMER_TICK_INST);
+    DL_UART_Main_reset(UART_0_INST);
     DL_SPI_reset(SPI_LCD_INST);
+    DL_ADC12_reset(ADC12_0_INST);
+
+
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
     DL_TimerA_enablePower(PWM_MOTOR_INST);
     DL_TimerA_enablePower(TIMER_TICK_INST);
+    DL_UART_Main_enablePower(UART_0_INST);
     DL_SPI_enablePower(SPI_LCD_INST);
+    DL_ADC12_enablePower(ADC12_0_INST);
+
+
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
@@ -116,6 +129,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_enableOutput(GPIO_PWM_MOTOR_C0_PORT, GPIO_PWM_MOTOR_C0_PIN);
     DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_MOTOR_C1_IOMUX,GPIO_PWM_MOTOR_C1_IOMUX_FUNC);
     DL_GPIO_enableOutput(GPIO_PWM_MOTOR_C1_PORT, GPIO_PWM_MOTOR_C1_PIN);
+
+    DL_GPIO_initPeripheralOutputFunction(
+        GPIO_UART_0_IOMUX_TX, GPIO_UART_0_IOMUX_TX_FUNC);
+    DL_GPIO_initPeripheralInputFunction(
+        GPIO_UART_0_IOMUX_RX, GPIO_UART_0_IOMUX_RX_FUNC);
 
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_SPI_LCD_IOMUX_SCLK, GPIO_SPI_LCD_IOMUX_SCLK_FUNC);
@@ -154,10 +172,22 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
+    DL_GPIO_initDigitalOutput(I2C_JY61P_SCL_IOMUX);
+
+    DL_GPIO_initDigitalOutput(I2C_JY61P_SDA_IOMUX);
+
+    DL_GPIO_initDigitalOutput(Gray_Address_PIN_0_IOMUX);
+
+    DL_GPIO_initDigitalOutput(Gray_Address_PIN_1_IOMUX);
+
+    DL_GPIO_initDigitalOutput(Gray_Address_PIN_2_IOMUX);
+
     DL_GPIO_clearPins(GPIOA, motor_AIN1_PIN |
-		motor_AIN2_PIN);
+		motor_AIN2_PIN |
+		Gray_Address_PIN_1_PIN);
     DL_GPIO_enableOutput(GPIOA, motor_AIN1_PIN |
-		motor_AIN2_PIN);
+		motor_AIN2_PIN |
+		Gray_Address_PIN_1_PIN);
     DL_GPIO_setLowerPinsPolarity(GPIOA, DL_GPIO_PIN_15_EDGE_RISE);
     DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_16_EDGE_RISE |
 		DL_GPIO_PIN_17_EDGE_RISE |
@@ -171,13 +201,21 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		GPIO_LCD_PIN_RES_PIN |
 		GPIO_LCD_PIN_DC_PIN |
 		GPIO_LCD_PIN_CS_PIN |
-		GPIO_LCD_PIN_BLK_PIN);
+		GPIO_LCD_PIN_BLK_PIN |
+		Gray_Address_PIN_0_PIN |
+		Gray_Address_PIN_2_PIN);
+    DL_GPIO_setPins(GPIOB, I2C_JY61P_SCL_PIN |
+		I2C_JY61P_SDA_PIN);
     DL_GPIO_enableOutput(GPIOB, motor_BIN1_PIN |
 		motor_BIN2_PIN |
 		GPIO_LCD_PIN_RES_PIN |
 		GPIO_LCD_PIN_DC_PIN |
 		GPIO_LCD_PIN_CS_PIN |
-		GPIO_LCD_PIN_BLK_PIN);
+		GPIO_LCD_PIN_BLK_PIN |
+		I2C_JY61P_SCL_PIN |
+		I2C_JY61P_SDA_PIN |
+		Gray_Address_PIN_0_PIN |
+		Gray_Address_PIN_2_PIN);
 
 }
 
@@ -307,6 +345,39 @@ SYSCONFIG_WEAK void SYSCFG_DL_TIMER_TICK_init(void) {
 }
 
 
+
+static const DL_UART_Main_ClockConfig gUART_0ClockConfig = {
+    .clockSel    = DL_UART_MAIN_CLOCK_BUSCLK,
+    .divideRatio = DL_UART_MAIN_CLOCK_DIVIDE_RATIO_2
+};
+
+static const DL_UART_Main_Config gUART_0Config = {
+    .mode        = DL_UART_MAIN_MODE_NORMAL,
+    .direction   = DL_UART_MAIN_DIRECTION_TX_RX,
+    .flowControl = DL_UART_MAIN_FLOW_CONTROL_NONE,
+    .parity      = DL_UART_MAIN_PARITY_NONE,
+    .wordLength  = DL_UART_MAIN_WORD_LENGTH_8_BITS,
+    .stopBits    = DL_UART_MAIN_STOP_BITS_ONE
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_UART_0_init(void)
+{
+    DL_UART_Main_setClockConfig(UART_0_INST, (DL_UART_Main_ClockConfig *) &gUART_0ClockConfig);
+
+    DL_UART_Main_init(UART_0_INST, (DL_UART_Main_Config *) &gUART_0Config);
+    /*
+     * Configure baud rate by setting oversampling and baud rate divisors.
+     *  Target baud rate: 9600
+     *  Actual baud rate: 9600.38
+     */
+    DL_UART_Main_setOversampling(UART_0_INST, DL_UART_OVERSAMPLING_RATE_16X);
+    DL_UART_Main_setBaudRateDivisor(UART_0_INST, UART_0_IBRD_20_MHZ_9600_BAUD, UART_0_FBRD_20_MHZ_9600_BAUD);
+
+
+
+    DL_UART_Main_enable(UART_0_INST);
+}
+
 static const DL_SPI_Config gSPI_LCD_config = {
     .mode        = DL_SPI_MODE_CONTROLLER,
     .frameFormat = DL_SPI_FRAME_FORMAT_MOTO3_POL0_PHA0,
@@ -337,5 +408,57 @@ SYSCONFIG_WEAK void SYSCFG_DL_SPI_LCD_init(void) {
 
     /* Enable module */
     DL_SPI_enable(SPI_LCD_INST);
+}
+
+/* ADC12_0 Initialization */
+static const DL_ADC12_ClockConfig gADC12_0ClockConfig = {
+    .clockSel       = DL_ADC12_CLOCK_ULPCLK,
+    .divideRatio    = DL_ADC12_CLOCK_DIVIDE_8,
+    .freqRange      = DL_ADC12_CLOCK_FREQ_RANGE_32_TO_40,
+};
+SYSCONFIG_WEAK void SYSCFG_DL_ADC12_0_init(void)
+{
+    DL_ADC12_setClockConfig(ADC12_0_INST, (DL_ADC12_ClockConfig *) &gADC12_0ClockConfig);
+    DL_ADC12_initSingleSample(ADC12_0_INST,
+        DL_ADC12_REPEAT_MODE_ENABLED, DL_ADC12_SAMPLING_SOURCE_AUTO, DL_ADC12_TRIG_SRC_SOFTWARE,
+        DL_ADC12_SAMP_CONV_RES_12_BIT, DL_ADC12_SAMP_CONV_DATA_FORMAT_UNSIGNED);
+    DL_ADC12_configConversionMem(ADC12_0_INST, ADC12_0_ADCMEM_ADC_CH0,
+        DL_ADC12_INPUT_CHAN_0, DL_ADC12_REFERENCE_VOLTAGE_VDDA, DL_ADC12_SAMPLE_TIMER_SOURCE_SCOMP0, DL_ADC12_AVERAGING_MODE_DISABLED,
+        DL_ADC12_BURN_OUT_SOURCE_DISABLED, DL_ADC12_TRIGGER_MODE_AUTO_NEXT, DL_ADC12_WINDOWS_COMP_MODE_DISABLED);
+    DL_ADC12_setSampleTime0(ADC12_0_INST,10);
+    DL_ADC12_enableDMA(ADC12_0_INST);
+    DL_ADC12_setDMASamplesCnt(ADC12_0_INST,1);
+    DL_ADC12_enableDMATrigger(ADC12_0_INST,(DL_ADC12_DMA_MEM0_RESULT_LOADED));
+    DL_ADC12_enableConversions(ADC12_0_INST);
+}
+
+static const DL_DMA_Config gDMA_CH0Config = {
+    .transferMode   = DL_DMA_FULL_CH_REPEAT_SINGLE_TRANSFER_MODE,
+    .extendedMode   = DL_DMA_NORMAL_MODE,
+    .destIncrement  = DL_DMA_ADDR_INCREMENT,
+    .srcIncrement   = DL_DMA_ADDR_UNCHANGED,
+    .destWidth      = DL_DMA_WIDTH_HALF_WORD,
+    .srcWidth       = DL_DMA_WIDTH_HALF_WORD,
+    .trigger        = ADC12_0_INST_DMA_TRIGGER,
+    .triggerType    = DL_DMA_TRIGGER_TYPE_EXTERNAL,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_DMA_CH0_init(void)
+{
+    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 40);
+    DL_DMA_initChannel(DMA, DMA_CH0_CHAN_ID , (DL_DMA_Config *) &gDMA_CH0Config);
+}
+SYSCONFIG_WEAK void SYSCFG_DL_DMA_init(void){
+    SYSCFG_DL_DMA_CH0_init();
+}
+
+
+SYSCONFIG_WEAK void SYSCFG_DL_SYSTICK_init(void)
+{
+    /*
+     * Initializes the SysTick period to 1.00 ms,
+     * enables the interrupt, and starts the SysTick Timer
+     */
+    DL_SYSTICK_config(80000);
 }
 

@@ -110,6 +110,26 @@ extern "C" {
 
 
 
+/* Defines for UART_0 */
+#define UART_0_INST                                                        UART0
+#define UART_0_INST_FREQUENCY                                           20000000
+#define UART_0_INST_IRQHandler                                  UART0_IRQHandler
+#define UART_0_INST_INT_IRQN                                      UART0_INT_IRQn
+#define GPIO_UART_0_RX_PORT                                                GPIOA
+#define GPIO_UART_0_TX_PORT                                                GPIOA
+#define GPIO_UART_0_RX_PIN                                        DL_GPIO_PIN_11
+#define GPIO_UART_0_TX_PIN                                        DL_GPIO_PIN_10
+#define GPIO_UART_0_IOMUX_RX                                     (IOMUX_PINCM22)
+#define GPIO_UART_0_IOMUX_TX                                     (IOMUX_PINCM21)
+#define GPIO_UART_0_IOMUX_RX_FUNC                      IOMUX_PINCM22_PF_UART0_RX
+#define GPIO_UART_0_IOMUX_TX_FUNC                      IOMUX_PINCM21_PF_UART0_TX
+#define UART_0_BAUD_RATE                                                  (9600)
+#define UART_0_IBRD_20_MHZ_9600_BAUD                                       (130)
+#define UART_0_FBRD_20_MHZ_9600_BAUD                                        (13)
+
+
+
+
 /* Defines for SPI_LCD */
 #define SPI_LCD_INST                                                       SPI1
 #define SPI_LCD_INST_IRQHandler                                 SPI1_IRQHandler
@@ -123,6 +143,24 @@ extern "C" {
 #define GPIO_SPI_LCD_SCLK_PIN                                     DL_GPIO_PIN_9
 #define GPIO_SPI_LCD_IOMUX_SCLK                                 (IOMUX_PINCM26)
 #define GPIO_SPI_LCD_IOMUX_SCLK_FUNC                 IOMUX_PINCM26_PF_SPI1_SCLK
+
+
+
+/* Defines for ADC12_0 */
+#define ADC12_0_INST                                                        ADC0
+#define ADC12_0_INST_IRQHandler                                  ADC0_IRQHandler
+#define ADC12_0_INST_INT_IRQN                                    (ADC0_INT_IRQn)
+#define ADC12_0_ADCMEM_ADC_CH0                                DL_ADC12_MEM_IDX_0
+#define ADC12_0_ADCMEM_ADC_CH0_REF               DL_ADC12_REFERENCE_VOLTAGE_VDDA
+#define ADC12_0_ADCMEM_ADC_CH0_REF_VOLTAGE_V                                     3.3
+#define GPIO_ADC12_0_C0_PORT                                               GPIOA
+#define GPIO_ADC12_0_C0_PIN                                       DL_GPIO_PIN_27
+
+
+
+/* Defines for DMA_CH0 */
+#define DMA_CH0_CHAN_ID                                                      (0)
+#define ADC12_0_INST_DMA_TRIGGER                      (DMA_ADC0_EVT_GEN_BD_TRIG)
 
 
 
@@ -177,6 +215,29 @@ extern "C" {
 /* Defines for PIN_B2: GPIOA.22 with pinCMx 47 on package pin 18 */
 #define GPIO_ENCODER_PIN_B2_PIN                                 (DL_GPIO_PIN_22)
 #define GPIO_ENCODER_PIN_B2_IOMUX                                (IOMUX_PINCM47)
+/* Port definition for Pin Group I2C_JY61P */
+#define I2C_JY61P_PORT                                                   (GPIOB)
+
+/* Defines for SCL: GPIOB.7 with pinCMx 24 on package pin 59 */
+#define I2C_JY61P_SCL_PIN                                        (DL_GPIO_PIN_7)
+#define I2C_JY61P_SCL_IOMUX                                      (IOMUX_PINCM24)
+/* Defines for SDA: GPIOB.23 with pinCMx 51 on package pin 22 */
+#define I2C_JY61P_SDA_PIN                                       (DL_GPIO_PIN_23)
+#define I2C_JY61P_SDA_IOMUX                                      (IOMUX_PINCM51)
+/* Defines for PIN_0: GPIOB.20 with pinCMx 48 on package pin 19 */
+#define Gray_Address_PIN_0_PORT                                          (GPIOB)
+#define Gray_Address_PIN_0_PIN                                  (DL_GPIO_PIN_20)
+#define Gray_Address_PIN_0_IOMUX                                 (IOMUX_PINCM48)
+/* Defines for PIN_1: GPIOA.14 with pinCMx 36 on package pin 7 */
+#define Gray_Address_PIN_1_PORT                                          (GPIOA)
+#define Gray_Address_PIN_1_PIN                                  (DL_GPIO_PIN_14)
+#define Gray_Address_PIN_1_IOMUX                                 (IOMUX_PINCM36)
+/* Defines for PIN_2: GPIOB.19 with pinCMx 45 on package pin 16 */
+#define Gray_Address_PIN_2_PORT                                          (GPIOB)
+#define Gray_Address_PIN_2_PIN                                  (DL_GPIO_PIN_19)
+#define Gray_Address_PIN_2_IOMUX                                 (IOMUX_PINCM45)
+
+
 
 /* clang-format on */
 
@@ -186,8 +247,12 @@ void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_PWM_MOTOR_init(void);
 void SYSCFG_DL_TIMER_TICK_init(void);
+void SYSCFG_DL_UART_0_init(void);
 void SYSCFG_DL_SPI_LCD_init(void);
+void SYSCFG_DL_ADC12_0_init(void);
+void SYSCFG_DL_DMA_init(void);
 
+void SYSCFG_DL_SYSTICK_init(void);
 
 bool SYSCFG_DL_saveConfiguration(void);
 bool SYSCFG_DL_restoreConfiguration(void);

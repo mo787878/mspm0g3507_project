@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2></Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\source\third_party\CMSIS\Core\Include;..\..\source;..\..\project;..\hardware;..\middle;..\app</IncludePath>
+              <IncludePath>..\..\source\third_party\CMSIS\Core\Include;..\..\source;..\..\project;..\hardware;..\middle;..\app;..\BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -449,6 +449,16 @@
               <FileType>5</FileType>
               <FilePath>..\hardware\hw_encoder.h</FilePath>
             </File>
+            <File>
+              <FileName>No_Mcu_Ganv_Grayscale_Sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\hardware\No_Mcu_Ganv_Grayscale_Sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>No_Mcu_Ganv_Grayscale_Sensor_Config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hardware\No_Mcu_Ganv_Grayscale_Sensor_Config.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -468,6 +478,61 @@
         </Group>
         <Group>
           <GroupName>app</GroupName>
+        </Group>
+        <Group>
+          <GroupName>BSP</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_gyro.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_gyro.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_gyro.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_gyro.h</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\ADC.h</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>IIC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\IIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>IIC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\IIC.h</FilePath>
+            </File>
+            <File>
+              <FileName>Uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\Uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>Uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\Uart.h</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
