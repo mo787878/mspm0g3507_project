@@ -474,10 +474,42 @@
               <FileType>5</FileType>
               <FilePath>..\middle\mid_timer.h</FilePath>
             </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\middle\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\middle\pid.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>app</GroupName>
+          <Files>
+            <File>
+              <FileName>motor_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\motor_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\app\motor_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>sensor_deal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\sensor_deal.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensor_deal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\app\sensor_deal.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>BSP</GroupName>

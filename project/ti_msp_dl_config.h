@@ -103,10 +103,15 @@ extern "C" {
 
 
 /* Defines for TIMER_TICK */
-#define TIMER_TICK_INST                                                  (TIMA0)
-#define TIMER_TICK_INST_IRQHandler                              TIMA0_IRQHandler
-#define TIMER_TICK_INST_INT_IRQN                                (TIMA0_INT_IRQn)
-#define TIMER_TICK_INST_LOAD_VALUE                                      (19999U)
+#define TIMER_TICK_INST                                                  (TIMG0)
+#define TIMER_TICK_INST_IRQHandler                              TIMG0_IRQHandler
+#define TIMER_TICK_INST_INT_IRQN                                (TIMG0_INT_IRQn)
+#define TIMER_TICK_INST_LOAD_VALUE                                       (9999U)
+/* Defines for TIMER_0 */
+#define TIMER_0_INST                                                     (TIMA0)
+#define TIMER_0_INST_IRQHandler                                 TIMA0_IRQHandler
+#define TIMER_0_INST_INT_IRQN                                   (TIMA0_INT_IRQn)
+#define TIMER_0_INST_LOAD_VALUE                                         (49999U)
 
 
 
@@ -247,6 +252,7 @@ void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_PWM_MOTOR_init(void);
 void SYSCFG_DL_TIMER_TICK_init(void);
+void SYSCFG_DL_TIMER_0_init(void);
 void SYSCFG_DL_UART_0_init(void);
 void SYSCFG_DL_SPI_LCD_init(void);
 void SYSCFG_DL_ADC12_0_init(void);

@@ -1,6 +1,6 @@
 #include "hw_motor.h"
 
-
+//此处可能存在bug，按理来说速度为负数代表反转但是这里将速度置0
 //设置电机1速度
 static void set_motor_1_speed(int speed_value)
 { 

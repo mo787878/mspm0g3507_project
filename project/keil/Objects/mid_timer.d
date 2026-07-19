@@ -78,4 +78,7 @@
   ..\..\source\ti\driverlib\dl_vref.h \
   ..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\..\source\ti\driverlib\m0p\dl_systick.h ..\hardware\hw_encoder.h
+  ..\..\source\ti\driverlib\m0p\dl_systick.h ..\hardware\hw_encoder.h \
+  ..\app\motor_control.h ..\middle\PID.h ..\hardware\hw_motor.h \
+  ..\app\sensor_deal.h ..\hardware\No_Mcu_Ganv_Grayscale_Sensor_Config.h \
+  E:\keil5\ARM\ARMCLANG\include\string.h ..\BSP\ADC.h ..\BSP\delay.h
